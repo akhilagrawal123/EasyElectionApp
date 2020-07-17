@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "257058186099",
+    "firebase_url": "https://easy-election-app-aeb3f.firebaseio.com",
+    "project_id": "easy-election-app-aeb3f",
+    "storage_bucket": "easy-election-app-aeb3f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:257058186099:android:fbc20a962ef287795c9b06",
+        "android_client_info": {
+          "package_name": "android.example.easyelectionapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "257058186099-qie9tqcs45rgn5cenkbhbl7vuph09tdr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "android.example.easyelectionapp",
+            "certificate_hash": "36f1ce46024c81e2099b7a45e2d7cbeae58dbe64"
+          }
+        },
+        {
+          "client_id": "257058186099-744casumg3314o1u3d79ep78gd75h2kq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRsW2cRy6-S8jivw6WUKaM2l2B9XCxE4w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "257058186099-744casumg3314o1u3d79ep78gd75h2kq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
