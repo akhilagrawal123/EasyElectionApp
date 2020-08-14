@@ -18,6 +18,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
@@ -51,7 +52,9 @@ public class ProfileActivity extends AppCompatActivity implements update_usernam
     FirebaseFirestore fStore;
     TextView pName,pEmail,pPhone;
     Toolbar toolbar;
-    String userId;
+    Button nxtBtn;
+    ProgressBar imageProcessProgressBar;
+    String result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +64,13 @@ public class ProfileActivity extends AppCompatActivity implements update_usernam
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("Profile");
+        storageReference = FirebaseStorage.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
+        user = mAuth.getCurrentUser();
+
+
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Profile");
 
 
         verifyEmail = (TextView) findViewById(R.id.verifyText);
@@ -69,6 +78,73 @@ public class ProfileActivity extends AppCompatActivity implements update_usernam
         profileImage  = (ImageView) findViewById(R.id.profile);
         changeImage = (ImageView) findViewById(R.id.changeimage);
         updateUsername = (ImageView) findViewById(R.id.changeName);
+        imageProcessProgressBar = (ProgressBar) findViewById(R.id.imageProcessProgressBar);
+
+        verifyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful())
+                        {
+                            Toast.makeText(ProfileActivity.this, "Verification email has been sent again", Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            Toast.makeText(ProfileActivity.this, "Error occurred!" + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+
+            }
+        });
+
+
+        pName = (TextView) findViewById(R.id.fullName);
+        pEmail = (TextView) findViewById(R.id.emailProfile);
+        pPhone = (TextView) findViewById(R.id.phoneProfile);
+
+
+        nxtBtn = (Button) findViewById(R.id.nxtBtn);
+        nxtBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                Objects.requireNonNull(mAuth.getCurrentUser()).reload().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                        if(!user.isEmailVerified()) {
+                            Toast.makeText(ProfileActivity.this, "Email not verified.", Toast.LENGTH_SHORT).show();
+                            verifyBtn.setVisibility(View.VISIBLE);
+                        }
+                        else
+                        {
+                            if(pName.getText().toString().equals("FullName"))
+                            {
+                                Log.i("Name",pName.getText().toString());
+                                Toast.makeText(ProfileActivity.this, "Please set your username first.", Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                finish();
+                                startActivity(intent);
+                            }
+                        }
+
+                    }
+                });
+
+
+
+            }
+        });
 
         updateUsername.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,44 +153,12 @@ public class ProfileActivity extends AppCompatActivity implements update_usernam
             }
         });
 
-        storageReference = FirebaseStorage.getInstance().getReference();
-        mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
 
-        StorageReference profileRef = storageReference.child("users/" + Objects.requireNonNull(mAuth.getCurrentUser()).getUid() + "/profile.jpg");
-        profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Picasso.get().load(uri).into(profileImage);
-            }
-        });
 
-        assert user != null;
-        if(!user.isEmailVerified())
-        {
-            verifyEmail.setVisibility(View.VISIBLE);
-            verifyBtn.setVisibility(View.VISIBLE);
+        settingUpProfileImage();
 
-            verifyBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful())
-                            {
-                                Toast.makeText(ProfileActivity.this, "Verification email has been sent again", Toast.LENGTH_SHORT).show();
-                            }
-                            else
-                            {
-                                Toast.makeText(ProfileActivity.this, "Error occurred!" + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
-                            }
 
-                        }
-                    });
-                }
-            });
-        }
+
 
 
 
@@ -127,11 +171,8 @@ public class ProfileActivity extends AppCompatActivity implements update_usernam
             }
         });
 
-        pName = (TextView) findViewById(R.id.fullName);
-        pEmail = (TextView) findViewById(R.id.emailProfile);
-        pPhone = (TextView) findViewById(R.id.phoneProfile);
 
-        fStore = FirebaseFirestore.getInstance();
+
 
         final DocumentReference documentReference = fStore.collection("users").document(mAuth.getCurrentUser().getUid());
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -146,9 +187,45 @@ public class ProfileActivity extends AppCompatActivity implements update_usernam
                 }
 
             }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(ProfileActivity.this, "Error" + e.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
         });
 
 
+
+    }
+
+    public void settingUpProfileImage()
+    {
+        imageProcessProgressBar.setVisibility(View.VISIBLE);
+        DocumentReference document = fStore.collection("users").document(user.getUid());
+        document.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                if(documentSnapshot.exists())
+                {
+                    String imageUri = documentSnapshot.getString("imagePath");
+                    imageProcessProgressBar.setVisibility(View.INVISIBLE);
+
+                    if(imageUri != null)
+                    {
+                        Picasso.get().load(imageUri).into(profileImage);
+                    }
+                }
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(ProfileActivity.this, "Error : "+ e.getMessage(), Toast.LENGTH_SHORT).show();
+                imageProcessProgressBar.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 
     @Override
@@ -159,8 +236,9 @@ public class ProfileActivity extends AppCompatActivity implements update_usernam
         {
             if(resultCode == Activity.RESULT_OK)
             {
+                assert data != null;
                 Uri imageUri = data.getData();
-                //profileImage.setImageURI(imageUri);
+               //profileImage.setImageURI(imageUri);
 
                 //uploading image......
                 uploadImageToFirebase(imageUri);
@@ -172,6 +250,7 @@ public class ProfileActivity extends AppCompatActivity implements update_usernam
     private void uploadImageToFirebase(Uri imageUri) {
 
         //upload image to firebase storage...........
+        imageProcessProgressBar.setVisibility(View.VISIBLE);
 
         final StorageReference fileRef = storageReference.child("users/" + Objects.requireNonNull(mAuth.getCurrentUser()).getUid() + "/profile.jpg");
         fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -184,11 +263,13 @@ public class ProfileActivity extends AppCompatActivity implements update_usernam
 
                        DocumentReference documentReference = fStore.collection("users").document(mAuth.getCurrentUser().getUid());
                        Map<String,Object> userInfo = new HashMap<>();
-                       userInfo.put("imagepath",fileRef.getDownloadUrl().toString());
+                       userInfo.put("imagePath",uri.toString());
 
-                       Log.i("ImagePath",fileRef.getDownloadUrl().toString());
+                       Log.i("ImagePath",uri.toString());
 
                        documentReference.update(userInfo);
+
+                       settingUpProfileImage();
 
                    }
                });
@@ -221,10 +302,6 @@ public class ProfileActivity extends AppCompatActivity implements update_usernam
             startActivity(intent);
         }
 
-        if(item.getItemId() == R.id.resetPasswordBtn);
-        {
-            Toast.makeText(this, "Not Set Yet!!", Toast.LENGTH_SHORT).show();
-        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -238,17 +315,15 @@ public class ProfileActivity extends AppCompatActivity implements update_usernam
     @Override
     public void updateUsername(String newUsername) {
 
-
         DocumentReference documentReference = fStore.collection("users").document(mAuth.getCurrentUser().getUid());
         Map<String,Object> userInfo = new HashMap<>();
         userInfo.put("username",newUsername);
+        pName.setText(newUsername);
 
         Log.i("usernmae",newUsername);
 
         documentReference.update(userInfo);
 
-
-
-
     }
+    
 }

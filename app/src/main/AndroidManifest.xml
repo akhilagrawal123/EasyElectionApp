@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="android.example.easyelectionapp">
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,17 +12,62 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UsersListActivity"></activity>
-        <activity android:name=".loginActivity">
+        <activity android:name=".SplashActivity"></activity>
+        <activity
+            android:name=".ElectionResultActivity"
+            android:label="Results"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".VotingActivity"
+            android:label="Voting Section"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AddCandidatesActivity"
+            android:label="Add Candidates"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CreateElectionActivity"
+            android:label="Create Election"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RoomInfoActivity"
+            android:label="Room Info"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MembersActivity"
+            android:label="Members of room"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ElectionActivity"
+            android:label="Elections"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CreateRoomActivity"
+            android:label="Create Room"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UsersListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".loginActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".RegisterActivity"></activity>
-        <activity android:name=".MainActivity" />
+        <activity
+            android:name=".ProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RegisterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainActivity"
+            android:label="Easy Election App"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

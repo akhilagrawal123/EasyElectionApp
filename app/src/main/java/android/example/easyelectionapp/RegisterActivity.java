@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
@@ -26,6 +27,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.rilixtech.widget.countrycodepicker.CountryCodePicker;
 
@@ -39,12 +41,14 @@ public class RegisterActivity extends AppCompatActivity {
     private static final String TAG = "TAG" ;
 
 
+
     FirebaseAuth mAuth;
     Button nextBtn,registerBtn;
 
-    EditText phone, codeEnter,emailId,password;
+    EditText phone, codeEnter,emailId;
+    TextInputLayout password;
     CountryCodePicker codePicker;
-    ProgressBar progressBar,registerProgressBar;
+    ProgressBar progressBar,registerProgressBar,otpEnteredProgressBar;
     TextView state,resendOtpBtn;
     String verificationId;
     PhoneAuthProvider.ForceResendingToken token;
@@ -69,10 +73,11 @@ public class RegisterActivity extends AppCompatActivity {
         codeEnter = (EditText) findViewById(R.id.codeEnter);
         codePicker = findViewById(R.id.ccp);
         emailId = (EditText) findViewById(R.id.emailId);
-        password = (EditText) findViewById(R.id.password);
+        password = (TextInputLayout) findViewById(R.id.password);
         registerBtn = (Button) findViewById(R.id.registerBtn);
         registerProgressBar = (ProgressBar) findViewById(R.id.registerProgressBar);
         resendOtpBtn = (TextView)findViewById(R.id.resendOtpBtn);
+        otpEnteredProgressBar = (ProgressBar) findViewById(R.id.otpEnteredProgressBar);
 
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +86,7 @@ public class RegisterActivity extends AppCompatActivity {
                 if(phoneVerifiedSuccessfully)
                 {
                     final String email = emailId.getText().toString();
-                    String pass = password.getText().toString();
+                    String pass = password.getEditText().getText().toString();
                     final String mobNum = phone.getText().toString();
 
                     if(email.isEmpty())
@@ -122,17 +127,19 @@ public class RegisterActivity extends AppCompatActivity {
 
                                 String username = "FullName";
 
-                                DocumentReference documentReference = fStore.collection("users").document(userId);
+                                final DocumentReference documentReference = fStore.collection("users").document(userId);
                                 Map<String,Object> userInfo = new HashMap<>();
                                 userInfo.put("email",email);
                                 userInfo.put("phone",mobNum);
                                 userInfo.put("username",username);
+                                userInfo.put("uid",userId);
 
                                 documentReference.set(userInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
 
                                         Log.i("OnSuccess","User profile created of user" + userId);
+                                        documentReference.update("votes", FieldValue.arrayUnion(userId));
 
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
@@ -153,6 +160,10 @@ public class RegisterActivity extends AppCompatActivity {
                                         {
                                             Toast.makeText(RegisterActivity.this, "Verification email has been sent", Toast.LENGTH_SHORT).show();
                                             Intent intent = new Intent(RegisterActivity.this,ProfileActivity.class);
+                                            intent.putExtra("result","close");
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            finish();
                                             startActivity(intent);
                                         }
                                         else
@@ -225,6 +236,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void verifyAuth(PhoneAuthCredential credential) {
 
+        otpEnteredProgressBar.setVisibility(View.VISIBLE);
+
         mAuth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -234,6 +247,9 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this, "Phone is verified successfully", Toast.LENGTH_SHORT).show();
                     mAuth.signOut();
                     phoneVerifiedSuccessfully = true;
+                    otpEnteredProgressBar.setVisibility(View.INVISIBLE);
+                    nextBtn.setEnabled(false);
+                    nextBtn.setText("Done");
                 }
                 else
                 {
@@ -267,6 +283,7 @@ public class RegisterActivity extends AppCompatActivity {
                 super.onCodeAutoRetrievalTimeOut(s);
                 Toast.makeText(RegisterActivity.this, "Otp expired! Re - Request the Otp.", Toast.LENGTH_SHORT).show();
                 verificationInProgress = false;
+                resendOtpBtn.setVisibility(View.VISIBLE);
                 resendOtpBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -295,6 +312,7 @@ public class RegisterActivity extends AppCompatActivity {
                             {
                                 PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId,userOtp);
                                 verifyAuth(credential);
+                                resendOtpBtn.setVisibility(View.INVISIBLE);
                             }
                             else
                             {

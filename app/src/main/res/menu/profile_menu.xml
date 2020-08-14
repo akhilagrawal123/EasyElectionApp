@@ -2,11 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       >
 
-
-
-    <item
-        android:id="@+id/resetPasswordBtn"
-        android:title="Reset Password" />
     <item
         android:id="@+id/logoutBtn"
         android:title="Logout" />

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/roomInfoItem"
+        android:title="Room Info"
+        />
+    <item
+        android:title="Members"
+        android:id="@+id/roomMembers"/>
+
+
+</menu>
