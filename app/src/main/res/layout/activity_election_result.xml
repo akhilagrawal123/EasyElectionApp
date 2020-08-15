@@ -16,12 +16,23 @@
         android:background="@color/colorAccent"
        />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Congratulations to "
+        android:textSize="24sp"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/blue"
+        android:visibility="gone"
+        android:id="@+id/winner"/>
+
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/resultRecyclerView"
         android:layout_width="match_parent"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:layout_height="wrap_content"
         />
 

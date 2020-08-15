@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultViewHolder> {
 
@@ -16,7 +18,10 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultView
 
     public ResultAdapter(ArrayList<Result> results) {
         this.results = results;
+
     }
+
+
 
     @NonNull
     @Override

@@ -173,6 +173,7 @@ public class loginActivity extends AppCompatActivity {
         if(mAuth.getCurrentUser() != null)
         {
             Intent intent = new Intent(loginActivity.this,ProfileActivity.class);
+            intent.putExtra("result","close");
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);

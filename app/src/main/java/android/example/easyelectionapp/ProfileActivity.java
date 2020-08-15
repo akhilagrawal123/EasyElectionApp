@@ -64,10 +64,40 @@ public class ProfileActivity extends AppCompatActivity implements update_usernam
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+
         storageReference = FirebaseStorage.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         user = mAuth.getCurrentUser();
+
+        Intent intent = getIntent();
+        result = intent.getStringExtra("result");
+
+        if(result.equals("close"))
+        {
+            mAuth.getCurrentUser().reload().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+
+                    if(user.isEmailVerified())
+                    {
+                        Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        finish();
+                        startActivity(intent);
+                    }
+
+
+
+                }
+            });
+        }
+
+
+
+
 
 
         Objects.requireNonNull(getSupportActionBar()).setTitle("Profile");
@@ -137,6 +167,12 @@ public class ProfileActivity extends AppCompatActivity implements update_usernam
                                 startActivity(intent);
                             }
                         }
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(ProfileActivity.this, "Some Error : " + e.getMessage(), Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -325,5 +361,5 @@ public class ProfileActivity extends AppCompatActivity implements update_usernam
         documentReference.update(userInfo);
 
     }
-    
-}
+
+    }

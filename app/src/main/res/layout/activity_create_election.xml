@@ -16,14 +16,14 @@
         android:layout_marginTop="28dp"
         android:layout_marginBottom="276dp"
         android:text="Start time when you want to start the election"
-        android:textColor="@color/blue"
         android:textAlignment="center"
+        android:textColor="@color/blue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextDate"
-        app:layout_constraintVertical_bias="0.110000014" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
         android:id="@+id/electionTitleEditText"
@@ -33,14 +33,15 @@
         android:layout_marginEnd="16dp"
         android:ems="10"
         android:hint="Election Title"
+        android:inputType="textPersonName"
         android:textColor="@color/blue"
         android:textColorHint="@color/blue"
-        android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.123" />
+        app:layout_constraintVertical_bias="0.138" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/PurposeElectionEditText"
@@ -72,6 +73,7 @@
        />
     </com.google.android.material.textfield.TextInputLayout>
 
+
     <TextView
         android:id="@+id/textView14"
         android:layout_width="0dp"
@@ -79,29 +81,30 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:text="Date at which you want to conduct election"
-        android:textColor="@color/blue"
         android:textAlignment="viewStart"
+        android:textColor="@color/blue"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.024"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/PurposeElectionEditText"
-        app:layout_constraintVertical_bias="0.129" />
+        app:layout_constraintVertical_bias="0.072" />
 
 
     <Button
         android:id="@+id/nextBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Next"
         android:background="@drawable/button_shape"
+        android:text="Next"
         android:textColor="@color/softBlue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextEndTime" />
-
+        app:layout_constraintTop_toBottomOf="@+id/editTextEndTime"
+        app:layout_constraintVertical_bias="0.339" />
 
     <TextView
         android:id="@+id/textView16"
@@ -110,14 +113,14 @@
         android:layout_marginTop="31dp"
         android:layout_marginBottom="172dp"
         android:text="End time at which you want to end election"
-        android:textColor="@color/blue"
         android:textAlignment="center"
+        android:textColor="@color/blue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextStartTime"
-        app:layout_constraintVertical_bias="0.254" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
         android:id="@+id/editTextDate"
@@ -135,7 +138,7 @@
         android:id="@+id/editTextStartTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="12dp"
         android:ems="10"
         android:hint="Start Time"
         app:layout_constraintEnd_toEndOf="parent"
@@ -147,10 +150,11 @@
         android:id="@+id/editTextEndTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="End Time"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView16" />
 

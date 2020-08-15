@@ -154,7 +154,7 @@ public class VotingActivity extends AppCompatActivity implements CandidateAdapte
 
                             if(flag)
                             {
-                                Toast.makeText(context, "You have already given vote.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "You have already voted in this election.", Toast.LENGTH_SHORT).show();
                                 Log.i(TAG,"Already given vote");
                             }
                             else
@@ -162,7 +162,7 @@ public class VotingActivity extends AppCompatActivity implements CandidateAdapte
                                 Log.i(TAG,"not given vote");
                                 new AlertDialog.Builder(context)
                                         .setTitle("Vote Confirmation")
-                                        .setMessage("Are you sure you wanted to give your vote to " + name+" .You cannot undo this later.")
+                                        .setMessage("Are you sure you want to vote " + name+"? You cannot undo this later.")
                                         .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
@@ -201,6 +201,7 @@ public class VotingActivity extends AppCompatActivity implements CandidateAdapte
 
         docRef.update(name, FieldValue.increment(1));
         Log.i(TAG,"Vote given successfully");
+        Toast.makeText(context, "Vote registered successfully.", Toast.LENGTH_SHORT).show();
 
         addingVoteToUserId();
     }

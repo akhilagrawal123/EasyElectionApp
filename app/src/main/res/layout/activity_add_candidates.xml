@@ -25,14 +25,15 @@
         android:layout_marginEnd="24dp"
         android:ems="10"
         android:hint="Candidate 1"
-        android:textColorHint="@color/blue"
-        android:textColor="@color/blue"
         android:inputType="textPersonName"
+        android:textColor="@color/blue"
+        android:textColorHint="@color/blue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="0.110000014" />
+        app:layout_constraintVertical_bias="0.06" />
 
     <EditText
         android:id="@+id/candidate2"
@@ -42,15 +43,15 @@
         android:layout_marginEnd="24dp"
         android:ems="10"
         android:hint="Candidate 2"
-        android:textColorHint="@color/blue"
-        android:textColor="@color/blue"
         android:inputType="textPersonName"
+        android:textColor="@color/blue"
+        android:textColorHint="@color/blue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/candidate1"
-        app:layout_constraintVertical_bias="0.087" />
+        app:layout_constraintVertical_bias="0.037" />
 
     <EditText
         android:id="@+id/candidate3"
@@ -60,14 +61,15 @@
         android:layout_marginEnd="24dp"
         android:ems="10"
         android:hint="Candidate 3"
-        android:textColorHint="@color/blue"
-        android:textColor="@color/blue"
         android:inputType="textPersonName"
+        android:textColor="@color/blue"
+        android:textColorHint="@color/blue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/candidate2"
-        app:layout_constraintVertical_bias="0.120000005" />
+        app:layout_constraintVertical_bias="0.052" />
 
     <EditText
         android:id="@+id/candidate4"
@@ -77,15 +79,15 @@
         android:layout_marginEnd="24dp"
         android:ems="10"
         android:hint="Candidate 4"
-        android:textColorHint="@color/blue"
-        android:textColor="@color/blue"
         android:inputType="textPersonName"
+        android:textColor="@color/blue"
+        android:textColorHint="@color/blue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/candidate3"
-        app:layout_constraintVertical_bias="0.139" />
+        app:layout_constraintVertical_bias="0.059" />
 
     <EditText
         android:id="@+id/candidate5"
@@ -95,15 +97,15 @@
         android:layout_marginEnd="24dp"
         android:ems="10"
         android:hint="Candidate 5"
-        android:textColorHint="@color/blue"
-        android:textColor="@color/blue"
         android:inputType="textPersonName"
+        android:textColor="@color/blue"
+        android:textColorHint="@color/blue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/candidate4"
-        app:layout_constraintVertical_bias="0.189" />
+        app:layout_constraintVertical_bias="0.053" />
 
     <Button
         android:id="@+id/addBtn"
@@ -117,7 +119,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/candidate5"
-        app:layout_constraintVertical_bias="0.515" />
+        app:layout_constraintVertical_bias="0.417" />
 
     <ProgressBar
         android:id="@+id/candidatesAddedProgressBar"
